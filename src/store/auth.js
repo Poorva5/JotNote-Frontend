@@ -3,7 +3,7 @@ const { createSlice } = require("@reduxjs/toolkit");
 
 const authSlice = createSlice({
     name: 'auth',
-    initalState: {
+    initialState: {
         user: {},
         accessToken: ''
     },

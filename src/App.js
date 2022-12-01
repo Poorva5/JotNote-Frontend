@@ -1,15 +1,22 @@
 import './App.css';
-import { BrowserRouter } from 'react-router-dom';
+import { Provider } from 'react-redux';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import store from './store/store';
 import NavBar from './Components/Header/Header';
-import CreateNoteForm from './Components/Notes/CreateNoteForm';
+import Home from './Pages/Home';
+
 
 function App() {
   return (
     <div className="App">
-      <BrowserRouter>
-        <NavBar />
-        <CreateNoteForm />
-      </BrowserRouter>
+      <Provider store={store}>
+        <BrowserRouter>
+          <NavBar />
+          <Routes>
+            <Route path="/" element={<Home />}></Route>
+          </Routes>
+        </BrowserRouter>
+      </Provider>
     </div>
   );
 }

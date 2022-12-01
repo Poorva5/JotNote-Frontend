@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { useNavigate } from 'react-router-dom';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
@@ -8,17 +9,19 @@ import Menu from '@mui/material/Menu';
 import MenuIcon from '@mui/icons-material/Menu';
 import Container from '@mui/material/Container';
 import Avatar from '@mui/material/Avatar';
-import Button from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import AdbIcon from '@mui/icons-material/Adb';
+import LoginModal from '../Auth/LoginModal';
+import EventNoteIcon from '@mui/icons-material/EventNote';
 
-const pages = ['Products', 'Pricing', 'Blog'];
-const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
+const settings = ['Profile', 'Login', 'Sign up', 'Logout'];
 
 function NavBar() {
     const [anchorElNav, setAnchorElNav] = React.useState(null);
     const [anchorElUser, setAnchorElUser] = React.useState(null);
+    const [openLogin, setOpenLogin] = React.useState(false);
+    const navigate = useNavigate();
 
     const handleOpenNavMenu = (event) => {
         setAnchorElNav(event.currentTarget);
@@ -35,24 +38,29 @@ function NavBar() {
         setAnchorElUser(null);
     };
 
+    const handleLogin = () => {
+        setOpenLogin(true)
+    }
+
     return (
         <AppBar position="static" sx={{ backgroundColor: 'white', }}>
             <Container maxWidth="xl">
                 <Toolbar disableGutters>
-                    <AdbIcon sx={{ display: { xs: 'none', md: 'flex' }, mr: 1 }} />
+                    {/* <AdbIcon sx={{ display: { xs: 'none', md: 'flex' }, mr: 1 }} /> */}
+                    <EventNoteIcon color='warning' sx={{ mr: 2, fontSize: '30px' }} />
                     <Typography
                         variant="h6"
                         noWrap
                         component="a"
-                        href="/"
+                        onClick={() => { navigate('/') }}
                         sx={{
                             mr: 2,
                             display: { xs: 'none', md: 'flex' },
-                            fontFamily: 'monospace',
                             fontWeight: 700,
-                            letterSpacing: '.3rem',
+                            letterSpacing: '1px',
                             color: '#5f6368',
                             textDecoration: 'none',
+                            cursor: 'pointer'
                         }}
                     >
                         JotNote
@@ -87,9 +95,9 @@ function NavBar() {
                                 display: { xs: 'block', md: 'none' },
                             }}
                         >
-                            {pages.map((page) => (
-                                <MenuItem key={page} onClick={handleCloseNavMenu} >
-                                    <Typography textAlign="center">{page}</Typography>
+                            {settings.map((setting) => (
+                                <MenuItem key={setting} onClick={handleCloseNavMenu} >
+                                    <Typography textAlign="center">{setting}</Typography>
                                 </MenuItem>
                             ))}
                         </Menu>
@@ -114,15 +122,6 @@ function NavBar() {
                         LOGO
                     </Typography>
                     <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
-                        {pages.map((page) => (
-                            <Button
-                                key={page}
-                                onClick={handleCloseNavMenu}
-                                sx={{ my: 2, color: '#5f6368', display: 'block' }}
-                            >
-                                {page}
-                            </Button>
-                        ))}
                     </Box>
 
                     <Box sx={{ flexGrow: 0 }}>
@@ -147,14 +146,22 @@ function NavBar() {
                             open={Boolean(anchorElUser)}
                             onClose={handleCloseUserMenu}
                         >
-                            {settings.map((setting) => (
-                                <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                                    <Typography textAlign="center">{setting}</Typography>
-                                </MenuItem>
-                            ))}
+                            <MenuItem key={""} onClick={handleLogin}>
+                                <Typography textAlign="center" href="/login">Login</Typography>
+                            </MenuItem>
+                            <MenuItem key={""} onClick={handleCloseUserMenu}>
+                                <Typography textAlign="center">Sign up</Typography>
+                            </MenuItem>
+                            <MenuItem key={""} onClick={handleCloseUserMenu}>
+                                <Typography textAlign="center">Profile</Typography>
+                            </MenuItem>
+                            <MenuItem key={""} onClick={handleCloseUserMenu}>
+                                <Typography textAlign="center">Logout</Typography>
+                            </MenuItem>
                         </Menu>
                     </Box>
                 </Toolbar>
+                <LoginModal openLogin={openLogin} setLoginOpen={setOpenLogin} />
             </Container>
         </AppBar >
     );
