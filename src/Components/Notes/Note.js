@@ -1,24 +1,29 @@
 import * as React from 'react';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
-import CardMedia from '@mui/material/CardMedia';
 import Typography from '@mui/material/Typography';
 import { CardActionArea } from '@mui/material';
+import { styled } from "@mui/material";
 
-export default function Note() {
+
+
+const ImgDiv = styled('img')(({ theme, color = "#6065D8" }) => ({
+    height: '140px',
+    margin: 'auto'
+}));
+
+const Note = ({ note: { title, content, image, id }, index }) => {
+
     return (
-        <div>
-            <Card sx={{ maxWidth: 238, textAlign: 'left', borderColor: '#e0e0e0', border: '1px solid transparent', borderRadius: '8px', marginLeft: '300px' }}>
+        <div style={{ marginRight: '20px' }} >
+            <Card sx={{ maxWidth: 238, textAlign: 'left', borderColor: '#FAFAFA', borderRadius: '8px' }} onClick={""}>
                 <CardActionArea>
-                    <CardMedia
-                        component="img"
-                        height="140"
-                        image="/static/images/cards/contemplative-reptile.jpg"
-                        alt="green iguana"
-                    />
+                    {image ? <ImgDiv
+                        src={image}
+                    /> : null}
                     <CardContent>
-                        <Typography gutterBottom variant="h5" component="div" color='#202124' sx={{ fontSize: '1rem', fontWeight: '600' }}>
-                            Lizard
+                        <Typography gutterBottom variant="h5" component="div" color='#202124' sx={{ fontSize: '1.3rem', fontWeight: '600' }}>
+                            {title}
                         </Typography>
                         <Typography variant="body2" color="#202124" sx={{
                             fontSize: '1.125rem', fontWeight: '500', paragraph: 'true', overflow: "hidden",
@@ -27,16 +32,14 @@ export default function Note() {
                             WebkitLineClamp: "10",
                             WebkitBoxOrient: "vertical",
                         }}>
-                            Lizards are a widespread group of squamate reptiles, with over 6,000
-                            species, ranging across all continents except Antarctica Lizards are a widespread group of squamate reptiles, with over 6,000
-                            species, ranging across all continents except Antarctica Lizards are a widespread group of squamate reptiles, with over 6,000
-                            species, ranging across all continents except AntarcticaLizards are a widespread group of squamate reptiles, with over 6,000
-                            species, ranging across all continents except AntarcticaLizards are a widespread group of squamate reptiles, with over 6,000
-                            species, ranging across all continents except Antarctica
+                            {content}
                         </Typography>
                     </CardContent>
                 </CardActionArea>
             </Card>
-        </div>
+        </div >
     );
+
 }
+
+export default Note;

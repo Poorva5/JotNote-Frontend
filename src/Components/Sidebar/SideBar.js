@@ -2,12 +2,12 @@ import { styled } from "@mui/material";
 import HomeIcon from '@mui/icons-material/Home';
 
 const WrapperDiv = styled('div')(({ theme, color = "#6065D8" }) => ({
-    display: 'flex'
+    display: 'flex',
+    // width: '20%'
 }));
 
 const SideBarDiv = styled('div')(({ theme, color = "#6065D8" }) => ({
-    // background: 'rgb(5, 68, 104)',
-    position: 'fixed',
+    // background: 'rgb(5, 68, 104
     width: '225px',
     height: '100%',
     padding: '20px 0',
@@ -17,7 +17,6 @@ const SideBarDiv = styled('div')(({ theme, color = "#6065D8" }) => ({
 const SideBarTabs = styled('a')(({ theme, color = "#6065D8" }) => ({
     display: 'block',
     padding: '13px 10px',
-    color: 'rgb(241, 237, 237)',
     fontSize: '16px',
     position: 'relative',
     textDecoration: 'none',
