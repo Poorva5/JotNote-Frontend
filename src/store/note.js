@@ -16,7 +16,7 @@ const noteSlice = createSlice({
         note: {},
         noteList: [],
         isLoading: false,
-        fetchList: []
+        fetchingNote: false
     },
 
     reducers: {
@@ -27,15 +27,19 @@ const noteSlice = createSlice({
             state.noteList = action.payload
         },
         setNote: (state, action) => {
-            state.post = action.payload
+            state.note = action.payload
         },
         setLoading: (state, action) => {
             state.isLoading = !state.isLoading
+        },
+
+        setFetchingNote: (state, action) => {
+            state.fetchingNote = !state.fetchingNote
         }
     }
 })
 
-export const { addNote, setNote, setNotes, setLoading } = noteSlice.actions;
+export const { addNote, setNote, setNotes, setLoading, setFetchingNote } = noteSlice.actions;
 
 export default noteSlice.reducer;
 
@@ -76,4 +80,42 @@ export function createNote(data) {
             dispatch(setLoading());
         }
     }
+}
+
+export function fetchNoteDetail(id) {
+    return async function fetchNoteDetailThunk(
+        dispatch,
+        getState
+    ) {
+        dispatch(setFetchingNote());
+        try {
+            const res = await apiGet.get(
+                `/api/note/${id}`
+            );
+            console.log(res.data)
+            dispatch(setNote(res.data))
+            dispatch(setFetchingNote());
+        } catch (err) {
+            dispatch(setFetchingNote());
+        }
+    };
+}
+
+export function updateNote(id, data) {
+    return async function noteUpdateThunk(
+        dispatch,
+    ) {
+        dispatch(setLoading());
+        try {
+            const res = await apiGet.put(
+                `/api/note/${id}/`,
+                (data = data)
+            );
+            dispatch(setNote(res.data));
+            dispatch(setLoading());
+            dispatch(fetchNoteList())
+        } catch (err) {
+            dispatch(setLoading())
+        }
+    };
 }

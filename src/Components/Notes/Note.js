@@ -3,28 +3,33 @@ import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
 import { CardActionArea } from '@mui/material';
-import { styled } from "@mui/material";
+import NoteUpdateModal from './NoteUpdateModal';
+import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined';
+import PushPinOutlinedIcon from '@mui/icons-material/PushPinOutlined';
 
 
+const Note = ({ note: { title, content, id }, index }) => {
+    const [open, setOpen] = React.useState(false);
+    const [isShown, setIsShown] = React.useState(false);
 
-const ImgDiv = styled('img')(({ theme, color = "#6065D8" }) => ({
-    height: '140px',
-    margin: 'auto'
-}));
-
-const Note = ({ note: { title, content, image, id }, index }) => {
-
+    console.log(id, 'from ---- note')
+    const handleView = () => {
+        setOpen(true)
+    }
     return (
         <div style={{ marginRight: '20px' }} >
-            <Card sx={{ maxWidth: 238, textAlign: 'left', borderColor: '#FAFAFA', borderRadius: '8px' }} onClick={""}>
+            <Card sx={{ maxWidth: 238, textAlign: 'left', borderColor: '#FAFAFA', borderRadius: '8px' }} onClick={handleView} onMouseEnter={() => { setIsShown(true) }} onMouseLeave={() => { setIsShown(false) }}>
                 <CardActionArea>
-                    {image ? <ImgDiv
-                        src={image}
-                    /> : null}
                     <CardContent>
-                        <Typography gutterBottom variant="h5" component="div" color='#202124' sx={{ fontSize: '1.3rem', fontWeight: '600' }}>
-                            {title}
-                        </Typography>
+                        <div style={{ display: "flex", justifyContent: 'space-between' }}>
+                            <Typography gutterBottom variant="h5" component="div" color='#202124' sx={{ fontSize: '1.3rem', fontWeight: '600' }}>
+                                {title}
+                            </Typography>
+                            <div>
+                                {isShown && <DeleteOutlineOutlinedIcon />}
+                                {isShown && <PushPinOutlinedIcon />}
+                            </div>
+                        </div>
                         <Typography variant="body2" color="#202124" sx={{
                             fontSize: '1.125rem', fontWeight: '500', paragraph: 'true', overflow: "hidden",
                             textOverflow: "ellipsis",
@@ -37,6 +42,7 @@ const Note = ({ note: { title, content, image, id }, index }) => {
                     </CardContent>
                 </CardActionArea>
             </Card>
+            {open && id ? (<NoteUpdateModal open={open} setOpen={setOpen} id={id} />) : null}
         </div >
     );
 
