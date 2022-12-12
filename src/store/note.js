@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const apiGet = axios.create({
-    baseURL: 'http://localhost:8000',
+    baseURL: 'http://15.207.8.22:8005',
     timeout: 15000,
     headers: {
         "Content-Type": "Application/json"
@@ -118,4 +118,20 @@ export function updateNote(id, data) {
             dispatch(setLoading())
         }
     };
+}
+
+export function deleteNote(id) {
+    return async function deleteNoteThunk(
+        dispatch,
+    ) {
+        try {
+            const res = await apiGet.delete(
+                `/api/note/${id}/`
+            );
+            dispatch(setLoading());
+            dispatch(fetchNoteList())
+        } catch (err) {
+            dispatch(setLoading());
+        }
+    }
 }
