@@ -26,9 +26,9 @@ const Home = () => {
         <div>
             <div style={{ display: 'flex', height: '100%', justifyContent: 'space-between', }}>
                 <SideBar />
-                <div style={{ display: 'flex', flexDirection: 'column', width: '80%', }}>
+                <div style={{ display: 'flex', flexDirection: 'column', width: '80%', marginTop: '50px' }}>
                     <CreateNoteForm />
-                    <div className="d-flex flex-wrap" style={{ gap: '20px' }}>{renderNotes(noteList)}</div>
+                    <div className="d-flex flex-wrap" style={{ gap: '20px', marginTop: '60px' }}>{renderNotes(noteList)}</div>
                 </div>
             </div>
         </div>

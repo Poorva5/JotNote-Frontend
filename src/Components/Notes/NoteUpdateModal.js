@@ -10,8 +10,9 @@ const style = {
     position: 'absolute',
     top: '50%',
     left: '50%',
+    padding: '0px',
     transform: 'translate(-50%, -50%)',
-    width: 700,
+    width: 600,
     bgcolor: 'background.paper',
     boxShadow: 24
 };
@@ -24,7 +25,6 @@ const NoteUpdateModal = ({ open, setOpen, id }) => {
             <Modal
                 open={open}
                 onClose={handleClose}
-                width="400"
                 aria-labelledby="modal-modal-title"
                 aria-describedby="modal-modal-description"
             >
