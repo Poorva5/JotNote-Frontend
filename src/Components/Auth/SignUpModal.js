@@ -1,39 +1,37 @@
 import * as React from 'react';
 import Box from '@mui/material/Box';
-import Button from '@mui/material/Button';
 import Modal from '@mui/material/Modal';
-import { styled } from "@mui/material";
-import CreateNoteForm from './CreateNoteForm';
-
+import SignUpForm from './SignUpForm';
 
 const style = {
     position: 'absolute',
     top: '50%',
     left: '50%',
     transform: 'translate(-50%, -50%)',
-    width: 700,
+    width: 400,
     bgcolor: 'background.paper',
-    boxShadow: 24
+    boxShadow: 24,
+    p: 4,
 };
 
-const NoteUpdateModal = ({ open, setOpen, id }) => {
-    const handleClose = () => setOpen(false);
+export default function SignUpModal({ openSignUp, setSignUpOpen }) {
+
+    const handleClose = () => setSignUpOpen(false);
 
     return (
         <div>
             <Modal
-                open={open}
+                open={openSignUp}
                 onClose={handleClose}
-                width="400"
                 aria-labelledby="modal-modal-title"
                 aria-describedby="modal-modal-description"
             >
                 <Box sx={style}>
-                    <CreateNoteForm type="edit" id={id} />
+                    <SignUpForm />
                 </Box>
+
             </Modal>
         </div>
-    );
-}
+    )
 
-export default NoteUpdateModal;
+}

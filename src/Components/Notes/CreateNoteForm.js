@@ -1,8 +1,6 @@
 import * as React from 'react';
 import { styled } from "@mui/material";
 import InputBase from '@mui/material/InputBase';
-import ImageOutlinedIcon from '@mui/icons-material/ImageOutlined';
-import AddAlertOutlinedIcon from '@mui/icons-material/AddAlertOutlined';
 import Button from '@mui/material/Button';
 import { useDispatch, useSelector } from "react-redux";
 import { createNote } from '../../store/note';
@@ -32,7 +30,6 @@ const CreateNoteForm = ({ type, id }) => {
         resolver: yupResolver(schema),
     });
     const { note, fetchingNote } = useSelector(state => state.note)
-    console.log(type, id, '----------------type')
     const setFormValues = () => {
         setValue("title", note.title)
         setValue("content", note.content)
@@ -51,12 +48,12 @@ const CreateNoteForm = ({ type, id }) => {
     const onSubmit = data => {
 
         if (id && type === 'edit') {
-            console.log(data, 'updated notes')
             dispatch(updateNote(id, data))
         } else {
-            console.log(data, 'notes log')
             dispatch(createNote(data))
         }
+        setValue("title", '')
+        setValue("content", '')
     }
 
     return (
@@ -102,17 +99,12 @@ const CreateNoteForm = ({ type, id }) => {
                 </div>
 
                 <div style={{ display: 'flex', justifyContent: 'space-between', }}>
-                    {/* <div>
-                            <ImageOutlinedIcon sx={{ fontSize: '20px', color: 'grey', ml: 1, mb: 1, cursor: 'pointer', mr: 2 }} />
-                            <AddAlertOutlinedIcon sx={{ fontSize: '20px', color: 'grey', ml: 1, mb: 1, cursor: 'pointer' }} />
-                        </div> */}
                     <div>
                         <Button type="submit" sx={{
                             fontSize: '15px', color: 'grey', cursor: 'pointer', mr: 3, p: 0, '&:hover': { backgroundColor: 'transparent' },
                         }}> {type === 'edit' ? 'Update' : 'Add'}</Button>
                     </div>
                 </div>
-
             </form>)}
         </CreateNoteDiv >
     );

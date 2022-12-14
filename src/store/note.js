@@ -1,10 +1,12 @@
 import axios from 'axios';
 
 const apiGet = axios.create({
-    baseURL: 'http://15.207.8.22:8005',
+    // baseURL: 'http://15.207.8.22:8005',
+    baseURL: 'http://127.0.0.1:8000',
     timeout: 15000,
     headers: {
-        "Content-Type": "Application/json"
+        "Content-Type": "Application/json",
+        "Authorization": `Token ${localStorage.getItem('accessToken')}`
     },
 })
 
@@ -43,24 +45,6 @@ export const { addNote, setNote, setNotes, setLoading, setFetchingNote } = noteS
 
 export default noteSlice.reducer;
 
-export function fetchNoteList(data) {
-    return async function fetchNoteListThunk(
-        dispatch,
-        getState
-    ) {
-        dispatch(setLoading());
-        try {
-            const res = await apiGet.get(
-                `/api/note/`,
-            );
-            dispatch(setNotes(res.data))
-            dispatch(setLoading());
-        } catch (err) {
-            dispatch(setLoading());
-        }
-    };
-}
-
 export function createNote(data) {
     return async function fetchNoteThunk(
         dispatch,
@@ -69,12 +53,11 @@ export function createNote(data) {
         dispatch(setLoading());
         try {
             const res = await apiGet.post(
-                `/api/note/`,
+                `/create/my-notes/`,
                 (data = data)
             );
             console.log(res.data, 'post note data');
-            dispatch(setLoading());
-            dispatch(fetchNoteList())
+            dispatch(fetchMyNoteList())
             // window.location.href = "/";
         } catch (err) {
             dispatch(setLoading());
@@ -92,9 +75,7 @@ export function fetchNoteDetail(id) {
             const res = await apiGet.get(
                 `/api/note/${id}`
             );
-            console.log(res.data)
             dispatch(setNote(res.data))
-            dispatch(setFetchingNote());
         } catch (err) {
             dispatch(setFetchingNote());
         }
@@ -113,7 +94,7 @@ export function updateNote(id, data) {
             );
             dispatch(setNote(res.data));
             dispatch(setLoading());
-            dispatch(fetchNoteList())
+            window.location.href = "/";
         } catch (err) {
             dispatch(setLoading())
         }
@@ -129,9 +110,26 @@ export function deleteNote(id) {
                 `/api/note/${id}/`
             );
             dispatch(setLoading());
-            dispatch(fetchNoteList())
+            dispatch(fetchMyNoteList())
         } catch (err) {
             dispatch(setLoading());
+        }
+    }
+}
+
+
+export function fetchMyNoteList(data) {
+    return async function myListThunk(
+        dispatch
+    ) {
+        try {
+            const res = await apiGet.get(
+                "/my-notes/"
+            );
+            dispatch(setLoading());
+            dispatch(setNotes(res.data))
+        } catch (err) {
+            dispatch(setLoading())
         }
     }
 }

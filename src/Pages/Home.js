@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import CreateNoteForm from "../Components/Notes/CreateNoteForm";
 import Note from "../Components/Notes/Note";
 import SideBar from "../Components/Sidebar/SideBar";
-import { fetchNoteList } from '../store/note';
+import { fetchMyNoteList } from '../store/note';
 import { useSelector, useDispatch } from "react-redux";
 
 
@@ -11,7 +11,7 @@ const Home = () => {
     const { noteList } = useSelector(state => state.note)
 
     useEffect(() => {
-        dispatch(fetchNoteList())
+        dispatch(fetchMyNoteList())
     }, [])
     const renderNotes = (noteList) => {
         return (

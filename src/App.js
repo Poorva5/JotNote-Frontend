@@ -4,6 +4,10 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import store from './store/store';
 import NavBar from './Components/Header/Header';
 import Home from './Pages/Home';
+import LandingPage from './Components/LandingPage/LandingPage';
+
+
+const token = localStorage.getItem('accessToken')
 
 
 function App() {
@@ -13,7 +17,7 @@ function App() {
         <BrowserRouter>
           <NavBar />
           <Routes>
-            <Route path="/" element={<Home />}></Route>
+            {token ? <Route path="/" element={<Home />}></Route> : <Route path='/' element={<LandingPage />}></Route>}
           </Routes>
         </BrowserRouter>
       </Provider>

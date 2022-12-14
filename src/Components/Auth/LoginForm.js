@@ -1,11 +1,13 @@
 import { useForm, Controller } from "react-hook-form";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { TextField } from "@mui/material";
 import CircularProgress from "@mui/material/CircularProgress";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { styled } from "@mui/material";
 import { Link } from "react-router-dom";
+import { LoginUser } from "../../store/auth";
+
 
 export const StyledFormGroup = styled("div")`
   width: 100% ;
@@ -57,16 +59,19 @@ const LoginForm = () => {
         resolver: yupResolver(schema),
     });
 
+    const dispatch = useDispatch()
+
     const { isLoading } = useSelector((state) => state.auth);
 
     const onSubmit = data => {
         console.log(data)
+        dispatch(LoginUser(data))
     };
 
     return (
         <div>
             <form onSubmit={handleSubmit(onSubmit)}>
-                <h2>Login</h2>
+                <h3 style={{ fontFamily: "Open Sans, sans-serif" }}>Login</h3>
 
                 <StyledFormGroup>
                     <StyledLabel htmlFor="email">
@@ -120,6 +125,9 @@ const LoginForm = () => {
                             />
                         )}
                     />
+                    <StyledLabel sx={{ marginTop: '15px', fontSize: '15px', cursor: 'pointer' }}>
+                        New User Sign up
+                    </StyledLabel>
                 </StyledFormGroup>
                 <StyledButton>
                     {isLoading ? <CircularProgress sx={{ color: "#fff" }} /> : "Login"}

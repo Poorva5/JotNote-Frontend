@@ -14,6 +14,8 @@ import MenuItem from '@mui/material/MenuItem';
 import AdbIcon from '@mui/icons-material/Adb';
 import LoginModal from '../Auth/LoginModal';
 import EventNoteIcon from '@mui/icons-material/EventNote';
+import SignUpModal from '../Auth/SignUpModal';
+
 
 const settings = ['Profile', 'Login', 'Sign up', 'Logout'];
 
@@ -21,6 +23,7 @@ function NavBar() {
     const [anchorElNav, setAnchorElNav] = React.useState(null);
     const [anchorElUser, setAnchorElUser] = React.useState(null);
     const [openLogin, setOpenLogin] = React.useState(false);
+    const [openSignUp, setOpenSignUp] = React.useState(false);
     const navigate = useNavigate();
 
     const handleOpenNavMenu = (event) => {
@@ -41,6 +44,17 @@ function NavBar() {
     const handleLogin = () => {
         setOpenLogin(true)
     }
+
+    const handleSignUp = () => {
+        setOpenSignUp(true)
+    }
+
+    const handleLogout = () => {
+        localStorage.removeItem('accessToken')
+        window.location.href = '/'
+    }
+
+    const token = localStorage.getItem('accessToken')
 
     return (
         <AppBar position="static" sx={{ backgroundColor: 'white', }}>
@@ -124,7 +138,7 @@ function NavBar() {
                     <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
                     </Box>
 
-                    <Box sx={{ flexGrow: 0 }}>
+                    {token ? (<Box sx={{ flexGrow: 0 }}>
                         <Tooltip title="Open settings">
                             <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
                                 <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
@@ -146,22 +160,24 @@ function NavBar() {
                             open={Boolean(anchorElUser)}
                             onClose={handleCloseUserMenu}
                         >
-                            <MenuItem key={""} onClick={handleLogin}>
-                                <Typography textAlign="center" href="/login">Login</Typography>
-                            </MenuItem>
-                            <MenuItem key={""} onClick={handleCloseUserMenu}>
-                                <Typography textAlign="center">Sign up</Typography>
-                            </MenuItem>
                             <MenuItem key={""} onClick={handleCloseUserMenu}>
                                 <Typography textAlign="center">Profile</Typography>
                             </MenuItem>
-                            <MenuItem key={""} onClick={handleCloseUserMenu}>
+                            <MenuItem key={""} onClick={handleLogout}>
                                 <Typography textAlign="center">Logout</Typography>
                             </MenuItem>
                         </Menu>
-                    </Box>
+                    </Box>) :
+                        (
+                            <>
+                                <MenuItem key={""} onClick={handleSignUp}>
+                                    <Typography textAlign="center" sx={{ color: 'black' }}>Sign up</Typography>
+                                </MenuItem>
+                            </>
+                        )}
                 </Toolbar>
                 <LoginModal openLogin={openLogin} setLoginOpen={setOpenLogin} />
+                <SignUpModal openSignUp={openSignUp} setSignUpOpen={setOpenSignUp} />
             </Container>
         </AppBar >
     );
