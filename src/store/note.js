@@ -1,8 +1,8 @@
 import axios from 'axios';
 
 const apiGet = axios.create({
-    // baseURL: 'http://15.207.8.22:8005',
-    baseURL: 'http://127.0.0.1:8000',
+    baseURL: 'http://15.207.8.22:8005',
+    // baseURL: 'http://127.0.0.1:8000',
     timeout: 15000,
     headers: {
         "Content-Type": "Application/json",
