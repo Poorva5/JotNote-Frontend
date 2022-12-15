@@ -6,19 +6,19 @@ import { CardActionArea } from '@mui/material';
 import NoteUpdateModal from './NoteUpdateModal';
 import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined';
 import PushPinOutlinedIcon from '@mui/icons-material/PushPinOutlined';
-import { deleteNote } from '../../store/note';
-import { useDispatch } from "react-redux";
+import { deleteNote, updatePinnedNote } from '../../store/note';
+import PushPinIcon from '@mui/icons-material/PushPin';
+import { useSelector, useDispatch } from "react-redux";
 
 
-const Note = ({ note: { title, content, id }, index }) => {
+const Note = ({ note: { title, content, id, pin }, index }) => {
     const [open, setOpen] = React.useState(false);
     const [isShown, setIsShown] = React.useState(false);
-    const [setPinned] = React.useState(false);
 
     const dispatch = useDispatch()
 
-    const handlePinned = () => {
-        setPinned(true);
+    const handlePinned = (id) => {
+        dispatch(updatePinnedNote(id))
     }
 
     const handleView = () => {
@@ -35,7 +35,14 @@ const Note = ({ note: { title, content, id }, index }) => {
                         </Typography>
                         <div>
                             {isShown && <DeleteOutlineOutlinedIcon onClick={() => dispatch(deleteNote(id))} sx={{ cursor: 'pointer' }} />}
-                            {isShown && <PushPinOutlinedIcon onClicke={handlePinned} />}
+                            {pin ?
+                                <>
+                                    {isShown && <PushPinIcon onClick={() => handlePinned(id)} sx={{ cursor: 'pointer' }} />}
+                                </> :
+                                <>
+                                    {isShown && <PushPinOutlinedIcon onClick={() => handlePinned(id)} sx={{ cursor: 'pointer' }} />}
+                                </>
+                            }
                         </div>
                     </div>
                     <CardActionArea onClick={handleView}>

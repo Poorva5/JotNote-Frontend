@@ -9,14 +9,26 @@ import { useSelector, useDispatch } from "react-redux";
 const Home = () => {
     const dispatch = useDispatch();
     const { noteList } = useSelector(state => state.note)
+    const { pinnedNoteList } = useSelector(state => state.note)
 
     useEffect(() => {
         dispatch(fetchMyNoteList())
     }, [])
+
     const renderNotes = (noteList) => {
         return (
             <>
                 {noteList.map((note, index) => (
+                    <Note key={note.id} index={index} note={note} />
+                ))}
+            </>
+        )
+    }
+
+    const renderPinnedNotes = (pinnedNoteList) => {
+        return (
+            <>
+                {pinnedNoteList.map((note, index) => (
                     <Note key={note.id} index={index} note={note} />
                 ))}
             </>
@@ -28,7 +40,16 @@ const Home = () => {
                 <SideBar />
                 <div style={{ display: 'flex', flexDirection: 'column', width: '80%', marginTop: '50px' }}>
                     <CreateNoteForm />
-                    <div className="d-flex flex-wrap" style={{ gap: '20px', marginTop: '60px' }}>{renderNotes(noteList)}</div>
+                    <div>
+                        <h6 style={{ textAlign: 'left', marginTop: '60px' }}>Pinned Notes</h6>
+                        <div className="d-flex flex-wrap" style={{ gap: '20px' }}>{renderPinnedNotes(pinnedNoteList)}</div>
+                    </div>
+
+                    <div>
+                        <h6 style={{ textAlign: 'left', marginTop: '60px' }}>Unpinned Note</h6>
+                        <div className="d-flex flex-wrap" style={{ gap: '20px', marginTop: '20px' }}>{renderNotes(noteList)}</div>
+                    </div>
+
                 </div>
             </div>
         </div>

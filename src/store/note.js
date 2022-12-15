@@ -1,8 +1,8 @@
 import axios from 'axios';
 
 const apiGet = axios.create({
-    baseURL: 'http://15.207.8.22:8005',
-    // baseURL: 'http://127.0.0.1:8000',
+    // baseURL: 'http://15.207.8.22:8005',
+    baseURL: 'http://127.0.0.1:8000',
     timeout: 15000,
     headers: {
         "Content-Type": "Application/json",
@@ -18,7 +18,8 @@ const noteSlice = createSlice({
         note: {},
         noteList: [],
         isLoading: false,
-        fetchingNote: false
+        fetchingNote: false,
+        pinnedNoteList: []
     },
 
     reducers: {
@@ -26,7 +27,8 @@ const noteSlice = createSlice({
             state.push(action.payload)
         },
         setNotes: (state, action) => {
-            state.noteList = action.payload
+            state.noteList = action.payload.unpinned_notes_list;
+            state.pinnedNoteList = action.payload.pinned_notes_list
         },
         setNote: (state, action) => {
             state.note = action.payload
@@ -86,15 +88,13 @@ export function updateNote(id, data) {
     return async function noteUpdateThunk(
         dispatch,
     ) {
-        dispatch(setLoading());
         try {
             const res = await apiGet.put(
                 `/api/note/${id}/`,
                 (data = data)
             );
             dispatch(setNote(res.data));
-            dispatch(setLoading());
-            window.location.href = "/";
+            dispatch(fetchMyNoteList());
         } catch (err) {
             dispatch(setLoading())
         }
@@ -117,7 +117,6 @@ export function deleteNote(id) {
     }
 }
 
-
 export function fetchMyNoteList(data) {
     return async function myListThunk(
         dispatch
@@ -127,9 +126,27 @@ export function fetchMyNoteList(data) {
                 "/my-notes/"
             );
             dispatch(setLoading());
-            dispatch(setNotes(res.data))
+            dispatch(setNotes(res.data));
         } catch (err) {
             dispatch(setLoading())
+        }
+    }
+}
+
+export function updatePinnedNote(id) {
+    return async function pinNoteUpdateThunk(
+        dispatch
+    ) {
+        dispatch(setLoading());
+        try {
+            const res = await apiGet.put(
+                `/pin-note/${id}/`,
+            );
+            dispatch(setNote(res.data));
+            dispatch(fetchMyNoteList());
+            dispatch(setLoading());
+        } catch (err) {
+            dispatch(setLoading());
         }
     }
 }
