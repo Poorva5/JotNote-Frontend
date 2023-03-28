@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const apiWithoutToken = axios.create({
-    baseURL: 'http://15.207.8.22:8005',
+    baseURL: 'http://13.51.166.60:8000',
     // baseURL: "http://localhost:8000",
     timeout: 15000,
     headers: {
@@ -52,7 +52,7 @@ export function LoginUser(data) {
         try {
             const res = await apiWithoutToken.post(
                 "/dj-rest-auth/login/",
-                (data = data)
+                data
             );
             dispatch(login(res.data))
             dispatch(setAuthorized(true));
@@ -76,7 +76,7 @@ export function SignUpUser(data) {
         try {
             const res = await apiWithoutToken.post(
                 "/dj-rest-auth/registration/",
-                (data = data)
+                data
             );
             console.log(res.data)
             dispatch(login(res.data))
